@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+/*
+ * Class-based dark mode: `dark:` utilities follow a `.dark` class on <html>
+ * instead of the OS alone. The class is set before first paint by the inline
+ * script in src/routes/__root.tsx (system preference, or the visitor's saved
+ * choice — see src/lib/theme.ts).
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol";
+  --font-display: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Native controls (scrollbars, form widgets, caret) follow the theme. */
+    color-scheme: light;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  html,
+  body {
+    @apply bg-stone-50 text-stone-900 antialiased;
+  }
+
+  :focus-visible {
+    outline: 3px solid #4f46e5;
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: #c7d2fe;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  /* Matches the page surface in src/routes/index.tsx (dark:bg-stone-950);
+     only visible in overscroll/rubber-band areas. */
+  html.dark,
+  html.dark body {
+    @apply bg-stone-950 text-stone-100;
+  }
+
+  /* indigo-300 outline: 9.9:1 on stone-950, 8.8:1 on stone-900, 5.5:1 on the
+     indigo-700 call-to-action band — the indigo-700 outline used in light mode
+     would be nearly invisible here. */
+  html.dark :focus-visible {
+    outline-color: #a5b4fc;
+  }
+
+  html.dark ::selection {
+    background-color: #3730a3;
+  }
+}
