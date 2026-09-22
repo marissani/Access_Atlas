@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
+import { StatusBadge, type LineKind } from "~/components/status-badge";
 import { ThemeToggle } from "~/components/theme-toggle";
 import { addToWaitlist } from "~/server/waitlist";
 
@@ -63,8 +64,6 @@ const ROOM_DETAIL = [
   { label: "Grab bars", value: "Fixed" },
   { label: "Toilet height", value: "18 in" },
 ];
-
-type LineKind = "ok" | "info" | "warn";
 
 type Leg = {
   icon: string;
@@ -147,43 +146,16 @@ const VERIFY_ITEMS = [
 /* Small building blocks                                               */
 /* ------------------------------------------------------------------ */
 
+/*
+ * The ✓ / i / ! status badge now lives in `~/components/status-badge`, so the
+ * Barcelona pilot renders the engine's own ok/info/warn lines with exactly this
+ * styling. Nothing about the badge changed — only where it is defined.
+ */
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <p className="text-sm font-semibold uppercase tracking-widest text-indigo-700 dark:text-indigo-300">
       {children}
     </p>
-  );
-}
-
-/** Status badge: ✓ ok, i info, ! warn — styled, colorblind-tolerant, paired with text. */
-function StatusBadge({ kind }: { kind: LineKind }) {
-  if (kind === "ok") {
-    return (
-      <span
-        aria-hidden="true"
-        className="mt-px grid h-5 w-5 shrink-0 place-items-center rounded-full bg-emerald-100 dark:bg-emerald-900 text-[11px] font-bold leading-none text-emerald-700 dark:text-emerald-300"
-      >
-        ✓
-      </span>
-    );
-  }
-  if (kind === "warn") {
-    return (
-      <span
-        aria-hidden="true"
-        className="mt-px grid h-5 w-5 shrink-0 place-items-center rounded-full bg-amber-100 dark:bg-amber-900 text-[11px] font-bold leading-none text-amber-800 dark:text-amber-200"
-      >
-        !
-      </span>
-    );
-  }
-  return (
-    <span
-      aria-hidden="true"
-      className="mt-px grid h-5 w-5 shrink-0 place-items-center rounded-full bg-stone-200 dark:bg-stone-700 text-[11px] font-bold leading-none text-stone-600 dark:text-stone-200"
-    >
-      i
-    </span>
   );
 }
 
@@ -242,6 +214,13 @@ function Header() {
         </nav>
         <div className="flex items-center gap-2">
           <ThemeToggle />
+          <a
+            href="/barcelona"
+            className="rounded-md border border-indigo-300 dark:border-indigo-700 px-3 py-2 text-sm font-semibold text-indigo-800 dark:text-indigo-200 transition-colors hover:bg-indigo-50 dark:hover:bg-indigo-950"
+          >
+            <span className="sm:hidden">Pilot</span>
+            <span className="hidden sm:inline">Barcelona pilot</span>
+          </a>
           <a
             href="#cta"
             className="rounded-md bg-indigo-700 dark:bg-indigo-600 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-indigo-800 dark:hover:bg-indigo-500 sm:px-4"
@@ -859,6 +838,14 @@ function Footer() {
                 </a>
               </li>
             ))}
+            <li>
+              <a
+                href="/barcelona"
+                className="rounded-md font-medium transition-colors hover:text-stone-900 dark:hover:text-stone-100"
+              >
+                Barcelona pilot
+              </a>
+            </li>
           </ul>
         </nav>
       </div>
